@@ -1,3 +1,5 @@
+<%@page import="java.util.List"%>
+<%@page import="entidade.Turma"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -26,8 +28,8 @@
                 </thead>
                 <tbody>
                     <%
-                        java.util.List<entidade.Turma> lista = (java.util.List<entidade.Turma>) request.getAttribute("lista");
-                        for (entidade.Turma turma : lista) {
+                        List<Turma> lista = (List<Turma>) request.getAttribute("lista");
+                        for (Turma turma : lista) {
                     %>
                     <tr>
                         <td><%= turma.getId()%></td>
@@ -43,6 +45,7 @@
                     </tr>
                     <% }%>
                 </tbody>
+
             </table>
             <a href="/aplicacaoMVC/admin/dashboard" class="btn btn-secondary">Voltar ao Dashboard</a>
         </div>

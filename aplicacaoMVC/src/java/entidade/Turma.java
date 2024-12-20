@@ -1,16 +1,15 @@
 package entidade;
 
 public class Turma {
-
     private int id;
     private int professorId;
     private int disciplinaId;
     private int alunoId;
     private String codigoTurma;
     private double nota;
-    private String professorNome;
-    private String disciplinaNome;
-    private String alunoNome;
+    private String professorNome; // Novo atributo
+    private String disciplinaNome; // Novo atributo
+    private String alunoNome; // Novo atributo
 
     public Turma() {
     }
@@ -23,6 +22,7 @@ public class Turma {
         this.nota = nota;
     }
 
+    // Getters e Setters
     public int getId() {
         return id;
     }
@@ -39,14 +39,6 @@ public class Turma {
         this.professorId = professorId;
     }
 
-    public String getProfessorNome() {
-        return professorNome;
-    }
-
-    public void setProfessorNome(String professorNome) {
-        this.professorNome = professorNome;
-    }
-
     public int getDisciplinaId() {
         return disciplinaId;
     }
@@ -55,28 +47,12 @@ public class Turma {
         this.disciplinaId = disciplinaId;
     }
 
-    public String getDisciplinaNome() {
-        return disciplinaNome;
-    }
-
-    public void setDisciplinaNome(String disciplinaNome) {
-        this.disciplinaNome = disciplinaNome;
-    }
-
     public int getAlunoId() {
         return alunoId;
     }
 
     public void setAlunoId(int alunoId) {
         this.alunoId = alunoId;
-    }
-
-    public String getAlunoNome() {
-        return alunoNome;
-    }
-
-    public void setAlunoNome(String alunoNome) {
-        this.alunoNome = alunoNome;
     }
 
     public String getCodigoTurma() {
@@ -93,5 +69,29 @@ public class Turma {
 
     public void setNota(double nota) {
         this.nota = nota;
+    }
+
+    public String getProfessorNome() {
+        return professorNome;
+    }
+
+    public void setProfessorNome(String professorNome) {
+        this.professorNome = professorNome;
+    }
+
+    public String getDisciplinaNome() {
+        return disciplinaNome;
+    }
+
+    public void setDisciplinaNome(String disciplinaNome) {
+        this.disciplinaNome = disciplinaNome;
+    }
+
+    public String getAlunoNome() {
+        return alunoNome;
+    }
+
+    public void setAlunoNome(String alunoNome) {
+        this.alunoNome = alunoNome;
     }
 }

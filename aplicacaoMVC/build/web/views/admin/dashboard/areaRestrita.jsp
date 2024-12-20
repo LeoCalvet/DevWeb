@@ -77,9 +77,9 @@
                     <div class="col-md-3">
                         <div class="card shadow">
                             <div class="card-body text-center">
-                                <h5 class="card-title">Relatório de Turmas</h5>
+                                <h5 class="card-title">Relatório de Turmas/Diciplinas</h5>
                                 <p class="card-text">Veja as disciplinas, turmas e notas dos alunos.</p>
-                                <a href="<%= request.getContextPath()%>/admin/turma?acao=gerarRelatorio" class="btn btn-info">Acessar</a>
+                                <a href="<%= request.getContextPath()%>/admin/relatorio" class="btn btn-info">Acessar</a>
                             </div>
                         </div>
                     </div>
