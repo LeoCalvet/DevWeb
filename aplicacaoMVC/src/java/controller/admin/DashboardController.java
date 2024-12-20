@@ -25,5 +25,4 @@ public class DashboardController extends HttpServlet {
         request.getRequestDispatcher("/views/admin/dashboard/areaRestrita.jsp")
                 .forward(request, response);
     }
-
 }

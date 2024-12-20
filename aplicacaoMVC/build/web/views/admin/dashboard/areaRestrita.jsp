@@ -7,8 +7,8 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="shortcut icon" href="#">
         <title>Dashboard - Área Restrita</title>
-        <link href="http://localhost:8081/aplicacaoMVC/views/bootstrap/bootstrap.min.css" rel="stylesheet">
-        <script src="http://localhost:8081/aplicacaoMVC/views/bootstrap/bootstrap.bundle.min.js"></script>
+        <link href="<%= request.getContextPath() %>/views/bootstrap/bootstrap.min.css" rel="stylesheet">
+        <script src="<%= request.getContextPath() %>/views/bootstrap/bootstrap.bundle.min.js"></script>
     </head>
     <body>
         <div class="container">
@@ -25,7 +25,7 @@
 
                 <div class="row mt-4">
                     <!-- Card para Gerenciar Alunos -->
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                         <div class="card shadow">
                             <div class="card-body text-center">
                                 <h5 class="card-title">Gerenciar Alunos</h5>
@@ -35,8 +35,19 @@
                         </div>
                     </div>
 
+                    <!-- Card para Gerenciar Professores -->
+                    <div class="col-md-3">
+                        <div class="card shadow">
+                            <div class="card-body text-center">
+                                <h5 class="card-title">Gerenciar Professores</h5>
+                                <p class="card-text">Cadastre, edite ou exclua professores no sistema.</p>
+                                <a href="<%= request.getContextPath()%>/admin/professor?acao=listar" class="btn btn-primary">Acessar</a>
+                            </div>
+                        </div>
+                    </div>
+
                     <!-- Card para Gerenciar Categorias -->
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                         <div class="card shadow">
                             <div class="card-body text-center">
                                 <h5 class="card-title">Gerenciar Categorias</h5>
@@ -47,7 +58,7 @@
                     </div>
 
                     <!-- Card para Logout -->
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                         <div class="card shadow">
                             <div class="card-body text-center">
                                 <h5 class="card-title">Sair do Sistema</h5>
@@ -59,6 +70,5 @@
                 </div>
             </div>
         </div>
-        <script src="http://localhost:8080/aplicacaoMVC/views/bootstrap/bootstrap.bundle.min.js"></script>
     </body>
 </html>
