@@ -9,9 +9,8 @@ public class AlunoDAO {
     public void inserir(Aluno aluno) throws Exception {
         Conexao conexao = new Conexao();
         try {
-            PreparedStatement sql = conexao.getConexao().prepareStatement(
-                    "INSERT INTO alunos (nome, email, celular, cpf, senha, endereco, cidade, bairro, cep) VALUES (?,?,?,?,?,?,?,?,?)"
-            );
+            String sqlQuery = "INSERT INTO alunos (nome, email, celular, cpf, senha, endereco, cidade, bairro, cep) VALUES (?,?,?,?,?,?,?,?,?)";
+            PreparedStatement sql = conexao.getConexao().prepareStatement(sqlQuery);
             sql.setString(1, aluno.getNome());
             sql.setString(2, aluno.getEmail());
             sql.setString(3, aluno.getCelular());
@@ -21,7 +20,13 @@ public class AlunoDAO {
             sql.setString(7, aluno.getCidade());
             sql.setString(8, aluno.getBairro());
             sql.setString(9, aluno.getCep());
+
+            System.out.println("Executando query: " + sqlQuery);
             sql.executeUpdate();
+            System.out.println("Aluno inserido com sucesso.");
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new Exception("Erro ao inserir aluno no banco de dados.", e);
         } finally {
             conexao.closeConexao();
         }
