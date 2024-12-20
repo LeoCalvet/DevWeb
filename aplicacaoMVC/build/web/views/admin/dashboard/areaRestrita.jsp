@@ -46,13 +46,13 @@
                         </div>
                     </div>
 
-                    <!-- Card para Gerenciar Categorias -->
+                    <!-- Card para Gerenciar Administradores -->
                     <div class="col-md-3">
                         <div class="card shadow">
                             <div class="card-body text-center">
-                                <h5 class="card-title">Gerenciar Categorias</h5>
-                                <p class="card-text">Organize e administre as categorias.</p>
-                                <a href="<%= request.getContextPath()%>/admin/CategoriaController?acao=Listar" class="btn btn-primary">Acessar</a>
+                                <h5 class="card-title">Gerenciar Administradores</h5>
+                                <p class="card-text">Cadastre, edite ou exclua administradores no sistema.</p>
+                                <a href="<%= request.getContextPath()%>/admin/administrador?acao=listar" class="btn btn-primary">Acessar</a>
                             </div>
                         </div>
                     </div>
