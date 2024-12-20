@@ -63,9 +63,17 @@
                             </div>
                         </div>
                     </div>
+                            
+                    <div class="col-md-3">
+                        <div class="card shadow">
+                            <div class="card-body text-center">
+                                <h5 class="card-title">Gerenciar Turmas</h5>
+                                <p class="card-text">Cadastre, edite ou exclua turmas no sistema.</p>
+                                <a href="<%= request.getContextPath()%>/admin/turma?acao=listar" class="btn btn-primary">Acessar</a>
+                            </div>
+                        </div>
+                    </div>
 
-
-                    <!-- Card para Logout -->
                     <div class="col-md-3">
                         <div class="card shadow">
                             <div class="card-body text-center">

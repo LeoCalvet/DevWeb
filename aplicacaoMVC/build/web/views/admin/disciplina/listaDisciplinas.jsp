@@ -5,13 +5,13 @@
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link href="<%= request.getContextPath() %>/views/bootstrap/bootstrap.min.css" rel="stylesheet">
+        <link href="<%= request.getContextPath()%>/views/bootstrap/bootstrap.min.css" rel="stylesheet">
         <title>Lista de Disciplinas</title>
     </head>
     <body>
         <div class="container mt-5">
             <h2 class="mb-4">Lista de Disciplinas</h2>
-            <a href="<%= request.getContextPath() %>/admin/disciplina?acao=cadastrar" class="btn btn-success mb-3">Nova Disciplina</a>
+            <a href="<%= request.getContextPath()%>/admin/disciplina?acao=cadastrar" class="btn btn-success mb-3">Nova Disciplina</a>
             <table class="table table-striped">
                 <thead>
                     <tr>
@@ -28,19 +28,21 @@
                         for (entidade.Disciplina disciplina : lista) {
                     %>
                     <tr>
-                        <td><%= disciplina.getNome() %></td>
-                        <td><%= disciplina.getRequisito() %></td>
-                        <td><%= disciplina.getEmenta() %></td>
-                        <td><%= disciplina.getCargaHoraria() %> horas</td>
+                        <td><%= disciplina.getNome()%></td>
+                        <td><%= disciplina.getRequisito()%></td>
+                        <td><%= disciplina.getEmenta()%></td>
+                        <td><%= disciplina.getCargaHoraria()%> horas</td>
                         <td>
-                            <a href="<%= request.getContextPath() %>/admin/disciplina?acao=editar&id=<%= disciplina.getId() %>" class="btn btn-warning btn-sm">Editar</a>
-                            <a href="<%= request.getContextPath() %>/admin/disciplina?acao=excluir&id=<%= disciplina.getId() %>" class="btn btn-danger btn-sm">Excluir</a>
+                            <a href="<%= request.getContextPath()%>/admin/disciplina?acao=editar&id=<%= disciplina.getId()%>" class="btn btn-warning btn-sm">Editar</a>
+                            <a href="<%= request.getContextPath()%>/admin/disciplina?acao=excluir&id=<%= disciplina.getId()%>" class="btn btn-danger btn-sm">Excluir</a>
                         </td>
                     </tr>
-                    <% } %>
+                    <% }%>
                 </tbody>
             </table>
+            <a href="/aplicacaoMVC/admin/dashboard" class="btn btn-secondary">Voltar ao Dashboard</a>
+
         </div>
-        <script src="<%= request.getContextPath() %>/views/bootstrap/bootstrap.bundle.min.js"></script>
+        <script src="<%= request.getContextPath()%>/views/bootstrap/bootstrap.bundle.min.js"></script>
     </body>
 </html>
