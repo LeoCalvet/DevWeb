@@ -4,6 +4,8 @@ import entidade.Turma;
 import model.TurmaDAO;
 
 import java.io.IOException;
+import java.util.List;
+import java.util.Map;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -53,6 +55,11 @@ public class TurmaController extends HttpServlet {
                         response.sendRedirect(request.getContextPath() + "/admin/turma?acao=listar");
                         break;
                     }
+                    case "gerarRelatorio":
+                        List<Map<String, Object>> relatorio = turmaDAO.gerarRelatorio();
+                        request.setAttribute("relatorio", relatorio);
+                        request.getRequestDispatcher("/views/admin/turma/relatorioTurmas.jsp").forward(request, response);
+                        break;
                     default:
                         response.sendRedirect(request.getContextPath() + "/admin/turma?acao=listar");
                         break;
