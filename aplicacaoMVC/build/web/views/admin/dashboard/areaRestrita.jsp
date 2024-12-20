@@ -22,6 +22,11 @@
                     out.println("<h2>Nome: " + administradorLogado.getNome() + "</h2>");
                 %>
 
+                <div class="mt-3">
+                    <a href="<%= request.getContextPath() %>/admin/aluno?acao=listar" class="btn btn-primary">
+                        Gerenciar Alunos
+                    </a>
+                </div>
 
             </div>
         </div>
