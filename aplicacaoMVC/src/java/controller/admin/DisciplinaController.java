@@ -54,13 +54,33 @@ public class DisciplinaController extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String acao = request.getParameter("acao");
         Disciplina disciplina = new Disciplina();
+
         disciplina.setNome(request.getParameter("nome"));
         disciplina.setRequisito(request.getParameter("requisito"));
         disciplina.setEmenta(request.getParameter("ementa"));
-        disciplina.setCargaHoraria(Integer.parseInt(request.getParameter("carga_horaria")));
+        String cargaHorariaStr = request.getParameter("carga_horaria");
 
         DisciplinaDAO disciplinaDAO = new DisciplinaDAO();
+
         try {
+            if (disciplina.getNome() == null || disciplina.getNome().isEmpty() || disciplina.getNome().length() > 50) {
+                throw new IllegalArgumentException("O nome é obrigatório e deve ter até 50 caracteres.");
+            }
+            if (disciplina.getRequisito() != null && disciplina.getRequisito().length() > 50) {
+                throw new IllegalArgumentException("O requisito deve ter até 50 caracteres.");
+            }
+            if (disciplina.getEmenta() == null || disciplina.getEmenta().isEmpty() || disciplina.getEmenta().length() > 500) {
+                throw new IllegalArgumentException("A ementa é obrigatória e deve ter até 500 caracteres.");
+            }
+            if (cargaHorariaStr == null || cargaHorariaStr.isEmpty()) {
+                throw new IllegalArgumentException("A carga horária é obrigatória.");
+            }
+            int cargaHoraria = Integer.parseInt(cargaHorariaStr);
+            if (cargaHoraria <= 0) {
+                throw new IllegalArgumentException("A carga horária deve ser um número positivo.");
+            }
+            disciplina.setCargaHoraria(cargaHoraria);
+
             if ("cadastrar".equals(acao)) {
                 disciplinaDAO.inserir(disciplina);
             } else if ("alterar".equals(acao)) {
@@ -68,8 +88,13 @@ public class DisciplinaController extends HttpServlet {
                 disciplinaDAO.alterar(disciplina);
             }
             response.sendRedirect(request.getContextPath() + "/admin/disciplina?acao=listar");
+        } catch (IllegalArgumentException e) {
+            request.setAttribute("erro", e.getMessage());
+            request.setAttribute("disciplina", disciplina);
+            request.getRequestDispatcher("/views/admin/disciplina/formDisciplina.jsp").forward(request, response);
         } catch (Exception e) {
-            throw new ServletException(e);
+            throw new ServletException("Erro ao salvar disciplina", e);
         }
     }
+
 }
