@@ -1,5 +1,4 @@
 <%@page contentType="text/html" pageEncoding="UTF-8" import="entidade.Administrador" %>
-
 <!DOCTYPE html>
 <html lang="pt-br">
     <head>
@@ -7,27 +6,57 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="shortcut icon" href="#">
-        <title>Área Restrita</title>
-        <link href="http://localhost:8080/aplicacaoMVC/views/bootstrap/bootstrap.min.css"  rel="stylesheet">
+        <title>Dashboard - Área Restrita</title>
+        <link href="http://localhost:8081/aplicacaoMVC/views/bootstrap/bootstrap.min.css" rel="stylesheet">
+        <script src="http://localhost:8081/aplicacaoMVC/views/bootstrap/bootstrap.bundle.min.js"></script>
     </head>
     <body>
         <div class="container">
             <jsp:include page="../../comum/menu.jsp" />
             <div class="mt-5">
+                <h1 class="text-center mb-4">Dashboard Administrativo</h1>
 
-                <h1>Área Restrita</h1>
                 <%
                     Administrador administradorLogado = (Administrador) session.getAttribute("administrador");
-                    out.println("<h3>Usuário logado com sucesso</h3>");
-                    out.println("<h2>Nome: " + administradorLogado.getNome() + "</h2>");
                 %>
-
-                <div class="mt-3">
-                    <a href="<%= request.getContextPath() %>/admin/aluno?acao=listar" class="btn btn-primary">
-                        Gerenciar Alunos
-                    </a>
+                <div class="alert alert-success text-center" role="alert">
+                    Usuário logado com sucesso. Bem-vindo, <strong><%= administradorLogado.getNome()%></strong>!
                 </div>
 
+                <div class="row mt-4">
+                    <!-- Card para Gerenciar Alunos -->
+                    <div class="col-md-4">
+                        <div class="card shadow">
+                            <div class="card-body text-center">
+                                <h5 class="card-title">Gerenciar Alunos</h5>
+                                <p class="card-text">Cadastre, edite ou exclua alunos no sistema.</p>
+                                <a href="<%= request.getContextPath()%>/admin/aluno?acao=listar" class="btn btn-primary">Acessar</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card para Gerenciar Categorias -->
+                    <div class="col-md-4">
+                        <div class="card shadow">
+                            <div class="card-body text-center">
+                                <h5 class="card-title">Gerenciar Categorias</h5>
+                                <p class="card-text">Organize e administre as categorias.</p>
+                                <a href="<%= request.getContextPath()%>/admin/CategoriaController?acao=Listar" class="btn btn-primary">Acessar</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card para Logout -->
+                    <div class="col-md-4">
+                        <div class="card shadow">
+                            <div class="card-body text-center">
+                                <h5 class="card-title">Sair do Sistema</h5>
+                                <p class="card-text">Faça logout de maneira segura.</p>
+                                <a href="<%= request.getContextPath()%>/admin/logOut" class="btn btn-danger">Logout</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
         <script src="http://localhost:8080/aplicacaoMVC/views/bootstrap/bootstrap.bundle.min.js"></script>

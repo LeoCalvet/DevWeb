@@ -7,7 +7,8 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="shortcut icon" href="#">
         <title>Login</title>
-        <link href="http://localhost:8080/aplicacaoMVC/views/bootstrap/bootstrap.min.css"  rel="stylesheet">
+        <link href="http://localhost:8081/aplicacaoMVC/views/bootstrap/bootstrap.min.css" rel="stylesheet">
+        <script src="http://localhost:8081/aplicacaoMVC/views/bootstrap/bootstrap.bundle.min.js"></script>
     </head>
     <body>
         <div class="container">
@@ -30,7 +31,7 @@
                     </div>
                     <div class="mb-3">
                         <label for="senha" class="form-label">Senha</label>
-                        <input type="password" name="senha" value="123" class="form-control">
+                        <input type="password" name="senha" value="111" class="form-control">
                     </div>
                     <div class="row">
                         <div class="col-sm-2">
