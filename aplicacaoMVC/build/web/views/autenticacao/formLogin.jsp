@@ -26,12 +26,16 @@
                 <% }%>
                 <form action="/aplicacaoMVC/AutenticaController?acao=login" method="POST">
                     <div class="mb-3">
-                        <label for="cpf" class="form-label">CPF</label>
-                        <input type="text" name="cpf" value="249.252.810-38" class="form-control">
+                        <label for="cpf" class="form-label">CPF <span class="text-muted">(Formato: xxx.xxx.xxx-xx)</span></label>
+                        <input type="text" name="cpf" class="form-control" id="cpf" 
+                               value="<%= request.getParameter("cpf") != null ? request.getParameter("cpf") : ""%>" 
+                               pattern="\d{3}\.\d{3}\.\d{3}-\d{2}" 
+                               placeholder="249.252.810-38" required>
                     </div>
                     <div class="mb-3">
                         <label for="senha" class="form-label">Senha</label>
-                        <input type="password" name="senha" value="111" class="form-control">
+                        <input type="password" name="senha" class="form-control" id="senha" 
+                               placeholder="111">
                     </div>
                     <div class="row">
                         <div class="col-sm-2">
