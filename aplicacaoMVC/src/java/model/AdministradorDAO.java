@@ -55,6 +55,7 @@ public class AdministradorDAO {
                     Administrador.setCpf(resultado.getString("CPF"));
                     Administrador.setEndereco(resultado.getString("ENDERECO"));
                     Administrador.setSenha(resultado.getString("SENHA"));
+                    Administrador.setAprovado(resultado.getString("aprovado"));
                 }
             }
             return Administrador;
@@ -74,6 +75,7 @@ public class AdministradorDAO {
             sql.setString(2, Administrador.getCpf());
             sql.setString(3, Administrador.getEndereco());
             sql.setString(4, Administrador.getSenha());
+            sql.setString(5, Administrador.getAprovado());
             sql.setInt(5, Administrador.getId());
             sql.executeUpdate();
 
