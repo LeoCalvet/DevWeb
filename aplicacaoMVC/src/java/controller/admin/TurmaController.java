@@ -64,14 +64,44 @@ public class TurmaController extends HttpServlet {
         String acao = request.getParameter("acao");
         Turma turma = new Turma();
 
-        turma.setProfessorId(Integer.parseInt(request.getParameter("professor_id")));
-        turma.setDisciplinaId(Integer.parseInt(request.getParameter("disciplina_id")));
-        turma.setAlunoId(Integer.parseInt(request.getParameter("aluno_id")));
-        turma.setCodigoTurma(request.getParameter("codigo_turma"));
-        turma.setNota(Double.parseDouble(request.getParameter("nota")));
-
-        TurmaDAO turmaDAO = new TurmaDAO();
         try {
+            String professorIdStr = request.getParameter("professor_id");
+            String disciplinaIdStr = request.getParameter("disciplina_id");
+            String alunoIdStr = request.getParameter("aluno_id");
+            String codigoTurma = request.getParameter("codigo_turma");
+            String notaStr = request.getParameter("nota");
+
+            if (professorIdStr == null || professorIdStr.isEmpty()) {
+                throw new IllegalArgumentException("O professor é obrigatório.");
+            }
+            if (disciplinaIdStr == null || disciplinaIdStr.isEmpty()) {
+                throw new IllegalArgumentException("A disciplina é obrigatória.");
+            }
+            if (alunoIdStr == null || alunoIdStr.isEmpty()) {
+                throw new IllegalArgumentException("O aluno é obrigatório.");
+            }
+            if (codigoTurma == null || codigoTurma.isEmpty() || codigoTurma.length() > 2) {
+                throw new IllegalArgumentException("O código da turma é obrigatório e deve ter até 2 caracteres.");
+            }
+            if (notaStr == null || notaStr.isEmpty()) {
+                throw new IllegalArgumentException("A nota é obrigatória.");
+            }
+
+            int professorId = Integer.parseInt(professorIdStr);
+            int disciplinaId = Integer.parseInt(disciplinaIdStr);
+            int alunoId = Integer.parseInt(alunoIdStr);
+            double nota = Double.parseDouble(notaStr);
+            if (nota < 0 || nota > 10) {
+                throw new IllegalArgumentException("A nota deve estar entre 0 e 10.");
+            }
+
+            turma.setProfessorId(professorId);
+            turma.setDisciplinaId(disciplinaId);
+            turma.setAlunoId(alunoId);
+            turma.setCodigoTurma(codigoTurma);
+            turma.setNota(nota);
+
+            TurmaDAO turmaDAO = new TurmaDAO();
             if ("cadastrar".equals(acao)) {
                 turmaDAO.inserir(turma);
             } else if ("alterar".equals(acao)) {
@@ -79,8 +109,13 @@ public class TurmaController extends HttpServlet {
                 turmaDAO.alterar(turma);
             }
             response.sendRedirect(request.getContextPath() + "/admin/turma?acao=listar");
+        } catch (IllegalArgumentException e) {
+            request.setAttribute("erro", e.getMessage());
+            request.setAttribute("turma", turma);
+            request.getRequestDispatcher("/views/admin/turma/formTurma.jsp").forward(request, response);
         } catch (Exception e) {
             throw new ServletException("Erro ao salvar turma", e);
         }
     }
+
 }
