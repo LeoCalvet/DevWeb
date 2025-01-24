@@ -3,6 +3,7 @@ package model;
 import entidade.Turma;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.List;
 
 public class TurmaDAO {
 
@@ -10,7 +11,7 @@ public class TurmaDAO {
         Conexao conexao = new Conexao();
         try {
             PreparedStatement sql = conexao.getConexao().prepareStatement(
-                    "INSERT INTO turmas (professor_id, disciplina_id, aluno_id, codigo_turma, nota) VALUES (?,?,?,?,?)"
+                "INSERT INTO turmas (professor_id, disciplina_id, aluno_id, codigo_turma, nota) VALUES (?,?,?,?,?)"
             );
             sql.setInt(1, turma.getProfessorId());
             sql.setInt(2, turma.getDisciplinaId());
@@ -27,15 +28,14 @@ public class TurmaDAO {
         ArrayList<Turma> lista = new ArrayList<>();
         Conexao conexao = new Conexao();
         try {
-            String query
-                    = "SELECT t.id, t.codigo_turma, t.nota, "
-                    + "       p.nome AS professor_nome, "
-                    + "       d.nome AS disciplina_nome, "
-                    + "       a.nome AS aluno_nome "
-                    + "FROM turmas t "
-                    + "INNER JOIN professores p ON t.professor_id = p.id "
-                    + "INNER JOIN disciplina d ON t.disciplina_id = d.id "
-                    + "INNER JOIN alunos a ON t.aluno_id = a.id";
+            String query = "SELECT t.id, t.codigo_turma, t.nota, " +
+                           "       p.nome AS professor_nome, " +
+                           "       d.nome AS disciplina_nome, " +
+                           "       a.nome AS aluno_nome " +
+                           "FROM turmas t " +
+                           "INNER JOIN professores p ON t.professor_id = p.id " +
+                           "INNER JOIN disciplina d ON t.disciplina_id = d.id " +
+                           "INNER JOIN alunos a ON t.aluno_id = a.id";
 
             PreparedStatement sql = conexao.getConexao().prepareStatement(query);
             ResultSet rs = sql.executeQuery();
@@ -59,7 +59,7 @@ public class TurmaDAO {
         Conexao conexao = new Conexao();
         try {
             PreparedStatement sql = conexao.getConexao().prepareStatement(
-                    "UPDATE turmas SET professor_id=?, disciplina_id=?, aluno_id=?, codigo_turma=?, nota=? WHERE id=?"
+                "UPDATE turmas SET professor_id=?, disciplina_id=?, aluno_id=?, codigo_turma=?, nota=? WHERE id=?"
             );
             sql.setInt(1, turma.getProfessorId());
             sql.setInt(2, turma.getDisciplinaId());
@@ -104,5 +104,67 @@ public class TurmaDAO {
             conexao.closeConexao();
         }
         return turma;
+    }
+
+    public List<Turma> listarNotasPorAluno(int alunoId) throws Exception {
+        List<Turma> turmas = new ArrayList<>();
+        Conexao conexao = new Conexao();
+        try {
+            String sqlQuery = "SELECT t.nota, d.nome AS disciplina FROM turmas t " +
+                              "JOIN disciplina d ON t.disciplina_id = d.id WHERE t.aluno_id = ?";
+            PreparedStatement stmt = conexao.getConexao().prepareStatement(sqlQuery);
+            stmt.setInt(1, alunoId);
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                Turma turma = new Turma();
+                turma.setNota(rs.getDouble("nota"));
+                turma.setDisciplinaNome(rs.getString("disciplina"));
+                turmas.add(turma);
+            }
+        } finally {
+            conexao.closeConexao();
+        }
+        return turmas;
+    }
+
+    public List<Turma> listarPorProfessor(int professorId) throws Exception {
+        List<Turma> turmas = new ArrayList<>();
+        Conexao conexao = new Conexao();
+        try {
+            String sqlQuery = "SELECT t.id, t.codigo_turma, t.nota, d.nome AS disciplina_nome, a.nome AS aluno_nome " +
+                              "FROM turmas t " +
+                              "JOIN disciplina d ON t.disciplina_id = d.id " +
+                              "JOIN alunos a ON t.aluno_id = a.id WHERE t.professor_id = ?";
+            PreparedStatement stmt = conexao.getConexao().prepareStatement(sqlQuery);
+            stmt.setInt(1, professorId);
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                Turma turma = new Turma();
+                turma.setId(rs.getInt("id"));
+                turma.setCodigoTurma(rs.getString("codigo_turma"));
+                turma.setNota(rs.getDouble("nota"));
+                turma.setDisciplinaNome(rs.getString("disciplina_nome"));
+                turma.setAlunoNome(rs.getString("aluno_nome"));
+                turmas.add(turma);
+            }
+        } finally {
+            conexao.closeConexao();
+        }
+        return turmas;
+    }
+
+    public void atualizarNota(int turmaId, double novaNota) throws Exception {
+        Conexao conexao = new Conexao();
+        try {
+            String sqlQuery = "UPDATE turmas SET nota = ? WHERE id = ?";
+            PreparedStatement stmt = conexao.getConexao().prepareStatement(sqlQuery);
+            stmt.setDouble(1, novaNota);
+            stmt.setInt(2, turmaId);
+            stmt.executeUpdate();
+        } finally {
+            conexao.closeConexao();
+        }
     }
 }

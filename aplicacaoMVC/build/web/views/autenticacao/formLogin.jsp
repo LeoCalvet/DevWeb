@@ -35,16 +35,19 @@
                     <div class="mb-3">
                         <label for="senha" class="form-label">Senha</label>
                         <input type="password" name="senha" class="form-control" id="senha" 
-                               placeholder="111">
+                               placeholder="Digite sua senha" required>
                     </div>
                     <div class="row">
                         <div class="col-sm-2">
-                            <input type="submit" value="Enviar" class="btn btn-primary">  
+                            <input type="submit" value="Login" class="btn btn-primary">  
                         </div>
-                        <div class="col-sm-6">                                
-                            <h6>Não possui acesso <a href="/aplicacaoMVC/RegistrarController">Registre-se aqui</a></h6>
+                        <div class="col-sm-6">
+                            <h6>Não possui acesso? <a href="/aplicacaoMVC/RegistrarController">Registre-se aqui</a></h6>
                         </div>
+                    </div>
                 </form>
+
+
             </div>
         </div>
         <script src="http://localhost:8080/aplicacaoMVC/views/bootstrap/bootstrap.bundle.min.js"></script>

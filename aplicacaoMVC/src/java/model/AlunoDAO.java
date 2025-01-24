@@ -119,4 +119,29 @@ public class AlunoDAO {
         return aluno;
     }
 
+    public Aluno autenticar(String cpf, String senha) throws Exception {
+        Conexao conexao = new Conexao();
+        Aluno aluno = null;
+
+        try {
+            String sql = "SELECT * FROM alunos WHERE cpf = ? AND senha = ?";
+            PreparedStatement stmt = conexao.getConexao().prepareStatement(sql);
+            stmt.setString(1, cpf);
+            stmt.setString(2, senha);
+
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                aluno = new Aluno();
+                aluno.setId(rs.getInt("id"));
+                aluno.setNome(rs.getString("nome"));
+                aluno.setCpf(rs.getString("cpf"));
+                aluno.setEmail(rs.getString("email"));
+            }
+        } finally {
+            conexao.closeConexao();
+        }
+
+        return aluno;
+    }
+    
 }

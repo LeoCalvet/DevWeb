@@ -1,41 +1,56 @@
 package controller;
 
 import entidade.Aluno;
+import entidade.Turma;
+import entidade.Disciplina;
 import model.AlunoDAO;
+import model.DisciplinaDAO;
+import model.TurmaDAO;
 
 import java.io.IOException;
+import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
-@WebServlet(name = "AlunoController", urlPatterns = {"/admin/aluno"})
+@WebServlet(name = "AlunoController", urlPatterns = {"/aluno"})
 public class AlunoController extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String acao = request.getParameter("acao");
-        AlunoDAO alunoDAO = new AlunoDAO();
+        HttpSession sessao = request.getSession();
+        Aluno alunoLogado = (Aluno) sessao.getAttribute("alunoLogado");
+
+        if (alunoLogado == null) {
+            System.out.println("Aluno não logado. Redirecionando para a tela de login.");
+            response.sendRedirect(request.getContextPath() + "/AutenticaController?acao=login");
+            return;
+        }
+
         try {
             if (acao != null) {
                 switch (acao) {
-                    case "listar":
-                        request.setAttribute("lista", alunoDAO.listar());
-                        request.getRequestDispatcher("/views/admin/aluno/listaAlunos.jsp").forward(request, response);
+                    case "login":
+                        request.getRequestDispatcher("/views/aluno/areaPrivadaAluno.jsp").forward(request, response);
                         break;
-                    case "editar":
-                        int id = Integer.parseInt(request.getParameter("id"));
-                        Aluno aluno = alunoDAO.getAluno(id);
-                        request.setAttribute("aluno", aluno);
-                        request.getRequestDispatcher("/views/admin/aluno/formAluno.jsp").forward(request, response);
+                    case "disciplinas":
+                        // Exemplo de lógica para disciplinas
+                        request.getRequestDispatcher("/views/aluno/minhasDisciplinas.jsp").forward(request, response);
                         break;
-                    case "excluir":
-                        int idExcluir = Integer.parseInt(request.getParameter("id"));
-                        alunoDAO.excluir(idExcluir);
-                        response.sendRedirect(request.getContextPath() + "/admin/aluno?acao=listar");
+                    case "historico":
+                        // Exemplo de lógica para histórico
+                        request.getRequestDispatcher("/views/aluno/historico.jsp").forward(request, response);
+                        break;
+                    case "perfil":
+                        // Exemplo de lógica para perfil
+                        request.getRequestDispatcher("/views/aluno/perfil.jsp").forward(request, response);
                         break;
                     default:
+                        response.sendRedirect(request.getContextPath() + "/AutenticaController?acao=login");
                         break;
                 }
             }
@@ -47,71 +62,72 @@ public class AlunoController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String acao = request.getParameter("acao");
-        Aluno aluno = new Aluno();
-
-        aluno.setNome(request.getParameter("nome"));
-        aluno.setEmail(request.getParameter("email"));
-        aluno.setCelular(request.getParameter("celular"));
-        aluno.setCpf(request.getParameter("cpf"));
-        aluno.setSenha(request.getParameter("senha"));
-        aluno.setEndereco(request.getParameter("endereco"));
-        aluno.setCidade(request.getParameter("cidade"));
-        aluno.setBairro(request.getParameter("bairro"));
-        aluno.setCep(request.getParameter("cep"));
-
         AlunoDAO alunoDAO = new AlunoDAO();
+        TurmaDAO turmaDAO = new TurmaDAO();
 
         try {
-            System.out.println("Ação recebida: " + acao);
-            System.out.println("Dados do aluno: " + aluno);
-
             if ("cadastrar".equals(acao)) {
+                Aluno aluno = new Aluno();
+                aluno.setNome(request.getParameter("nome"));
+                aluno.setEmail(request.getParameter("email"));
+                aluno.setCelular(request.getParameter("celular"));
+                aluno.setCpf(request.getParameter("cpf"));
+                aluno.setSenha(request.getParameter("senha"));
+                aluno.setEndereco(request.getParameter("endereco"));
+                aluno.setCidade(request.getParameter("cidade"));
+                aluno.setBairro(request.getParameter("bairro"));
+                aluno.setCep(request.getParameter("cep"));
+
                 alunoDAO.inserir(aluno);
-                System.out.println("Aluno cadastrado com sucesso.");
+                response.sendRedirect(request.getContextPath() + "/admin/aluno?acao=listar");
+
             } else if ("alterar".equals(acao)) {
+                Aluno aluno = new Aluno();
                 aluno.setId(Integer.parseInt(request.getParameter("id")));
+                aluno.setNome(request.getParameter("nome"));
+                aluno.setEmail(request.getParameter("email"));
+                aluno.setCelular(request.getParameter("celular"));
+                aluno.setCpf(request.getParameter("cpf"));
+                aluno.setSenha(request.getParameter("senha"));
+                aluno.setEndereco(request.getParameter("endereco"));
+                aluno.setCidade(request.getParameter("cidade"));
+                aluno.setBairro(request.getParameter("bairro"));
+                aluno.setCep(request.getParameter("cep"));
+
                 alunoDAO.alterar(aluno);
-                System.out.println("Aluno alterado com sucesso.");
+                response.sendRedirect(request.getContextPath() + "/admin/aluno?acao=listar");
+
+            } else if ("login".equals(acao)) {
+                String email = request.getParameter("email");
+                String senha = request.getParameter("senha");
+
+                Aluno aluno = alunoDAO.autenticar(email, senha);
+
+                if (aluno != null) {
+                    // Login bem-sucedido
+                    HttpSession sessao = request.getSession();
+                    sessao.setAttribute("alunoLogado", aluno);
+                    response.sendRedirect("areaPrivadaAluno.jsp");
+                } else {
+                    // Credenciais inválidas
+                    request.setAttribute("mensagemErro", "Credenciais inválidas! Verifique seu email e senha.");
+                    request.getRequestDispatcher("loginAluno.jsp").forward(request, response);
+                }
+            } else if ("inscrever".equals(acao)) {
+                // RF9: Inscrever aluno na turma
+                int alunoId = ((Aluno) request.getSession().getAttribute("alunoLogado")).getId();
+                int disciplinaId = Integer.parseInt(request.getParameter("disciplinaId"));
+                Turma turma = new Turma();
+                turma.setAlunoId(alunoId);
+                turma.setDisciplinaId(disciplinaId);
+                turma.setCodigoTurma("A"); // Código fictício
+                turma.setNota(0); // Nota inicial
+                turmaDAO.inserir(turma);
+                response.sendRedirect(request.getContextPath() + "/aluno?acao=inscricao");
             }
-            response.sendRedirect(request.getContextPath() + "/admin/aluno?acao=listar");
-        } catch (IllegalArgumentException e) {
-            System.out.println("Erro de validação: " + e.getMessage());
-            request.setAttribute("erro", e.getMessage());
-            request.setAttribute("aluno", aluno);
-            request.getRequestDispatcher("/views/admin/aluno/formAluno.jsp").forward(request, response);
         } catch (Exception e) {
             e.printStackTrace();
-            throw new ServletException("Erro ao salvar aluno", e);
+            throw new ServletException("Erro ao processar requisição.", e);
         }
     }
-
-    private boolean validarCPF(String cpf) {
-        cpf = cpf.replaceAll("\\D", "");
-        if (cpf.length() != 11 || cpf.matches("(\\d)\\1{10}")) {
-            return false;
-        }
-
-        int soma = 0, resto;
-        for (int i = 1; i <= 9; i++) {
-            soma += Integer.parseInt(cpf.substring(i - 1, i)) * (11 - i);
-        }
-        resto = (soma * 10) % 11;
-        if ((resto == 10) || (resto == 11)) {
-            resto = 0;
-        }
-        if (resto != Integer.parseInt(cpf.substring(9, 10))) {
-            return false;
-        }
-
-        soma = 0;
-        for (int i = 1; i <= 10; i++) {
-            soma += Integer.parseInt(cpf.substring(i - 1, i)) * (12 - i);
-        }
-        resto = (soma * 10) % 11;
-        if ((resto == 10) || (resto == 11)) {
-            resto = 0;
-        }
-        return resto == Integer.parseInt(cpf.substring(10, 11));
-    }
-
 }
